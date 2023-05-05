@@ -17,8 +17,10 @@ function PlayBtn() {
 
     const handleButtonClick = async () => {
         try {
+            console.log(parseFloat(inputValue));
             const result = await contract.methods.initiate(parseInt(inputValue)).call({ from: accounts[0] });
             await contract.methods.initiate(parseInt(inputValue)).send({ from: accounts[0] });
+            console.log(result)
             setLosingDoor(result);
         } catch (error) {
             console.error('Une erreur est survenue lors de l\'appel à la méthode initiate:', error);

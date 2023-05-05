@@ -1,12 +1,10 @@
 import closedDoorImage from '../assets/closed_door.png';
-import {useState} from "react";
 import useEth from "../../contexts/EthContext/useEth";
 import WhitelistBtn from "./WhitelistBtn";
 import PlayBtn from "./PlayBtn";
 import {useLosingDoor} from "../../contexts/LosingDoorContext";
 
 function Card() {
-    const [value, setValue] = useState("?");
     const {state: {contract, accounts}} = useEth();
     const { losingDoor } = useLosingDoor();
 
@@ -21,6 +19,7 @@ function Card() {
 
         console.log(losingDoor);
         const result = await contract.methods.play(1, parseInt(e.target.id)).call({from: accounts[0]});
+        await contract.methods.play(1, parseInt(e.target.id)).send({from: accounts[0]});
         console.log('Gagné ? ' + result);
     };
 

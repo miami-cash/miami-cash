@@ -7,6 +7,7 @@ contract Casino is Ownable {
         address addr;
         bool isWhiteListed;
         uint totalWin;
+        uint loosingDoor;
     }
 
     struct Constants {
@@ -18,7 +19,6 @@ contract Casino is Ownable {
         uint maxBetAmount;
     }
 
-    uint loosingDoor = 0;
     Constants private constants = Constants({
         nbDoor: 3,
         nbWinningDoor: 2,
@@ -44,14 +44,19 @@ contract Casino is Ownable {
     event PlayerWhitelisted(address indexed player);
 
     // Fonction pour inscrire un joueur sur la whitelist
-    function addToWhiteList() public onlyOwner {
+    function addToWhiteList() public {
         require(!casinoPlayer[msg.sender].isWhiteListed, "Le joueur est deja whitelist");
-        casinoPlayer[msg.sender].isWhiteListed = true;
+        casinoPlayer[msg.sender] = Player({
+            addr: msg.sender,
+            isWhiteListed: true,
+            totalWin: 0,
+            loosingDoor: 0
+        });
         emit PlayerWhitelisted(msg.sender);
     }
 
     // Fonction pour retirer un joueur de la whitelist
-    function removeFromWhiteList() public onlyOwner {
+    function removeFromWhiteList() public {
         casinoPlayer[msg.sender].isWhiteListed = false;
     }
 
@@ -61,7 +66,7 @@ contract Casino is Ownable {
     }
 
     function resetGame() internal {
-        loosingDoor = 0;
+        casinoPlayer[msg.sender].loosingDoor = 0;
     }
 
     function win(uint betAmount, uint winningMultiplier) internal {
@@ -76,11 +81,11 @@ contract Casino is Ownable {
         casinoPlayer[msg.sender].totalWin += (payout - betAmount);
     }
 
-    function play(uint betAmount, uint choosedDoor) public returns (bool){
-        require(choosedDoor / 3 <= 1, "la porte choisi doit etre 1,2 ou 3");
-        require(loosingDoor != 0, "le joueur doit avoir clique sur jouer");
+    function play(uint betAmount, uint choosedDoor) public payable returns (bool){
+        require(choosedDoor / 3 <= 1, "la porte choisi doit etre 1 2 ou 3");
+        require(casinoPlayer[msg.sender].loosingDoor != 0, "le joueur doit avoir clique sur jouer");
         emit BetPlaced(msg.sender, betAmount, choosedDoor);
-        if (choosedDoor == loosingDoor) {
+        if (choosedDoor == casinoPlayer[msg.sender].loosingDoor) {
             emit BetLost(msg.sender, betAmount, choosedDoor);
             lose(betAmount, constants.losingMultiplier);
             resetGame();
@@ -95,12 +100,12 @@ contract Casino is Ownable {
     }
 
     function initiate(uint betAmount) public payable returns (uint){
-        resetGame();
+        casinoPlayer[msg.sender].loosingDoor = 0;
         require(casinoPlayer[msg.sender].isWhiteListed, "Le joueur doit etre whitelisted");
-        require(loosingDoor == 0, "la porte perdante doit etre 0");
+        require(casinoPlayer[msg.sender].loosingDoor == 0, "la porte perdante doit etre 0");
         emit BetInitiated(msg.sender, betAmount);
-        loosingDoor = randomPorte();
-        return loosingDoor;
+        casinoPlayer[msg.sender].loosingDoor = randomPorte();
+        return casinoPlayer[msg.sender].loosingDoor;
     }
 
     function credit() public payable {

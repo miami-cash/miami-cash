@@ -33,6 +33,7 @@ function WhitelistBtn() {
         if (e.target.tagName === 'INPUT') {
             return;
         }
+        console.log(accounts)
         await contract.methods.addToWhiteList().send({ from: accounts[0] });
     };
 
