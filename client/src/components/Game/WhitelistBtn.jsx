@@ -70,7 +70,7 @@ function WhitelistBtn() {
 
     return (
         <div className='whitelist'>
-            <button onClick={whitelist}>
+            <button className="btn-whitelist" onClick={whitelist}>
                 J'ai 18 ans et j'accepte
             </button>
             <WhitelistPopup show={showPopup}/>

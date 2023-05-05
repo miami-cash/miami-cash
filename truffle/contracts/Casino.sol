@@ -71,7 +71,7 @@ contract Casino is Ownable {
 
     function win(uint betAmount, uint winningMultiplier) internal {
         uint payout = betAmount * winningMultiplier / 10;
-        payable(msg.sender).transfer(payout);
+        //payable(msg.sender).transfer(payout);
         casinoPlayer[msg.sender].totalWin += (payout - betAmount);
     }
 
@@ -108,8 +108,10 @@ contract Casino is Ownable {
         return casinoPlayer[msg.sender].loosingDoor;
     }
 
+    /*
     function credit() public payable {
     }
+    */
 
     function withdraw(uint amount) public payable onlyOwner {
         require(amount <= address(this).balance, "le montant recupere doit etre inferieur au solde");
