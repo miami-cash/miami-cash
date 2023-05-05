@@ -62,12 +62,13 @@ function PlayBtn() {
             {}
             <div className="input-container">
                 <input
+                    className="input-style"
                     type="number"
                     value={inputValue}
                     onChange={handleInputChange}
                     placeholder="Entrez une valeur"
                 />
-                <button onClick={handleButtonClick}>
+                <button className="button-play" onClick={handleButtonClick}>
                     Jouer
                 </button>
             </div>
