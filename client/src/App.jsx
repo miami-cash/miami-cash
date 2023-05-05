@@ -4,14 +4,17 @@ import Setup from "./components/Setup";
 import Demo from "./components/Demo";
 import Footer from "./components/Footer";
 import Game from "./components/Game";
+import LosingDoorContext, {LosingDoorProvider} from "./contexts/LosingDoorContext";
 
 function App() {
     return (
         <EthProvider>
             <div id="App">
-                <div className="container">
-                    <Intro/>
-                </div>
+                <LosingDoorProvider>
+                    <div className="container">
+                        <Intro/>
+                    </div>
+                </LosingDoorProvider>
             </div>
         </EthProvider>
     );
