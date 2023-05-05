@@ -14,7 +14,7 @@ Ce projet utilise Solidity, Web3.js, Truffle et Ganache pour créer un casino en
 
 ## Installation
 
-1. Clonez ce repository : `git clone https://github.com/nom-du-projet.git`
+1. Clonez ce repository : `git clone https://github.com/miami-cash/miami-cash`
 2. Installez les dépendances : `npm install`
 3. Démarrez Ganache et importez un compte à utiliser pour votre application. Pour plus d'informations, consultez la documentation de Ganache.
 4. Dans un terminal, démarrez le serveur Truffle : `truffle develop`

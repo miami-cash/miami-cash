@@ -1,7 +1,7 @@
-import React, { useReducer, useCallback, useEffect } from "react";
+import React, {useCallback, useEffect, useReducer} from "react";
 import Web3 from "web3";
 import EthContext from "./EthContext";
-import { reducer, actions, initialState } from "./state";
+import {actions, initialState, reducer} from "./state";
 
 function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -9,7 +9,14 @@ function EthProvider({ children }) {
   const init = useCallback(
     async artifact => {
       if (artifact) {
-        const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
+        const customGasPrice = "20000000000"; // mettre ici votre gas price personnalisé
+        const web3 = new Web3(Web3.givenProvider || "HTTP://127.0.0.1:7545", null, {
+          transactionConfirmationBlocks: 1,
+          transactionBlockTimeout: 5,
+          transactionPollingTimeout: 120000,
+          defaultGasPrice: customGasPrice,
+          defaultGas: 0, // pour définir une limite de gas illimitée
+        });
         const accounts = await web3.eth.requestAccounts();
         const networkID = await web3.eth.net.getId();
         const { abi } = artifact;

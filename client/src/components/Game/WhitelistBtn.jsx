@@ -70,8 +70,8 @@ function WhitelistBtn() {
 
     return (
         <div className='whitelist'>
-            <button className="btn-whitelist" onClick={whitelist}>
-                J'ai 18 ans et j'accepte
+            <button className="button-accept" onClick={whitelist}>
+                J'ai 18 ans et j'accepte de me faire arnaquer
             </button>
             <WhitelistPopup show={showPopup}/>
             <Modal
