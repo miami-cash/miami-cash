@@ -12,7 +12,9 @@ function EthProvider({ children }) {
         const web3 = new Web3(Web3.givenProvider || "ws://localhost:7545");
         const accounts = await web3.eth.requestAccounts();
         const networkID = await web3.eth.net.getId();
+        console.log(networkID);
         const { abi } = artifact;
+        console.log(artifact.networks[networkID].address);
         let address, contract;
         try {
           address = artifact.networks[networkID].address;
